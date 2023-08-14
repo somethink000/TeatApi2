@@ -1,10 +1,11 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\v1\NotebookController;
 
-use App\Models\Notebook;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,5 @@ use App\Models\Notebook;
 |
 */
 
-Route::resource('Notebook', Notebook::class);
+Route::resource('notebook', NotebookController::class);
+

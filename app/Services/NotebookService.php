@@ -2,18 +2,20 @@
 
 namespace App\Services;
 
+use App\Http\Requests\NotebookStoreRequest;
 use App\Models\Notebook;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 
 use Illuminate\Support\Str;
 
 
-class ProjectService
+class NotebookService
 {
 
 
-    public function All()
+    public function all()
     {
         $result = Notebook::get();
 
@@ -21,29 +23,32 @@ class ProjectService
     }
 
 
-    public function Get($id)
+    public function get($id)
     {
         $result = Notebook::find($id);
 
         return $result;
     }
 
-    public function Create($request)
+    public function create(NotebookStoreRequest $request): Notebook
     {
-        // $review = new Notebook();
-        // $review->save();
+        $data = $request->only(
+            'name',
+            'company',
+            'phone',
+            'email',
+            'birthday',
+        );
 
-        // $img = $request->file('image');
-        // $path = $img->store('notebook_images');
+        $path = $request->file('image')->store('notebook_images');
+        $data['image'] = $path;
 
-        // $review->image = $path;
-
-
+        return Notebook::create($data);
     }
 
 
 
-    public function Update($request, $project)
+    public function update($request)
     {
         // $data = $request->all();
         // $result = $project->fill($data)->save();
@@ -51,7 +56,7 @@ class ProjectService
         // return $result;
     }
 
-    public function Delete($id)
+    public function delete($id)
     {
         $item = $this->Get($id);
 
