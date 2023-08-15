@@ -18,5 +18,7 @@ use App\Http\Controllers\Api\v1\NotebookController;
 |
 */
 
-Route::resource('notebook', NotebookController::class);
+Route::resource('notebook', NotebookController::class)->except([
+    'create', 'edit' 
+]);
 

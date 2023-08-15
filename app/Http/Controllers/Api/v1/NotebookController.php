@@ -22,30 +22,29 @@ class NotebookController extends Controller
 
     public function index()
     {
-        $project = $this->notebookService->all();
+        return Notebook::paginate();
     }
 
-    public function show($id)
+    public function show(Request $request, Notebook $notebook): NotebookResource
     {
-        $project = $this->notebookService->get($id);
+        return new NotebookResource($notebook);
     }
 
     public function store(NotebookStoreRequest $request): NotebookResource
     {
-        $notebook = $this->notebookService->create($request);
+        $result = $this->notebookService->create($request);
 
+        return new NotebookResource($result);
+    }
+
+    public function update(NotebookStoreRequest $request, Notebook $notebook): NotebookResource
+    {
+        $this->notebookService->update($request, $notebook);
         return new NotebookResource($notebook);
     }
 
-    public function update($id, Request $request)
+    public function destroy(Request $request, Notebook $notebook): ?bool
     {
-        $this->notebookService->update($request);
-    }
-
-    public function destroy($id)
-    {
-
-        //$project = $this->NotebookService->GetNotebook($id);
-        $this->notebookService->delete($id);
+        return $this->notebookService->destroy($notebook);
     }
 }
