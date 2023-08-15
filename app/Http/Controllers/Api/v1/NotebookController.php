@@ -23,7 +23,7 @@ class NotebookController extends Controller
 
     public function index()
     {
-        return NotebookResource::collection(Notebook::cursorPaginate(10));
+        return NotebookResource::collection(Notebook::paginate(10));
     }
 
     public function show(Notebook $notebook): NotebookResource

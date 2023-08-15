@@ -21,15 +21,14 @@ class NotebookUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-       
-            return [
-                'name' => ['string'],
-                'company' => ['string'],
-                'phone' => [],
-                'email' => ['email'],
-                'birthday' => [],
-                'image' => ['nullable', 'image:jpg, jpeg, png'],
-            ];
-    
+
+        return [
+            'name' => 'string',
+            'company' => 'string',
+            //'phone' => ,
+            'email' => 'email',
+            'birthday' => 'date',
+            'image' => 'nullable|max:5000|image:jpg, jpeg, png',
+        ];
     }
 }
