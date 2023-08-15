@@ -11,4 +11,4 @@
 
 
 
-<h3>Тестировал Api через тесты. Использую: Docker, Git, vscode formater и другие дополнения, Linux ubuntu.</h3> 
+<h3>Тестировал Api через тесты. Использую: Docker, Git, Linux ubuntu, vscode formater и другие дополнения.</h3> 
