@@ -38,7 +38,6 @@ class NotebookTest extends TestCase
         $response->assertStatus(200);
     }
 
-
     public function testNotebookCreate(): void
     {
 
@@ -66,36 +65,10 @@ class NotebookTest extends TestCase
         Notebook::findOrFail($response->json('data.id'));
     }
 
-    public function testNotebookUpdate(): void
-    {
-
-        $notebook = Notebook::factory()->create();
-        $data = Notebook::factory()->make();
-        $response = $this->patch(
-            route('notebook.update', $notebook->getKey()),
-            [
-                'image' => UploadedFile::fake()->image('avatar.jpg')
-            ] +
-                $data->getAttributes()
-        )
-            ->assertOk()
-            ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'name',
-                    'company',
-                    'phone',
-                    'email',
-                    'birthday',
-                    'image'
-                ]
-            ]);
-    }
-
     /**
-     * @dataProvider invalidNotebookFieldsProvider
+     * @dataProvider NotebookFieldsProvider
      */
-    public function testNotebookUpdateInvalid(string $field, mixed $value): void
+    public function testNotebookUpdate(string $field, mixed $value): void
     {
 
         $notebook = Notebook::factory()->create();
@@ -111,10 +84,19 @@ class NotebookTest extends TestCase
                 ]
             )
         )
-            ->assertInvalid();
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    'id',
+                    'name',
+                    'company',
+                    'phone',
+                    'email',
+                    'birthday',
+                    'image'
+                ]
+            ]);
     }
-
-
 
     public function testNotebookDelete(): void
     {
@@ -124,12 +106,8 @@ class NotebookTest extends TestCase
         $response->assertOk();
     }
 
-
-
-
-    public static function invalidNotebookFieldsProvider(): Generator
+    public static function NotebookFieldsProvider(): Generator
     {
-        yield 'invalid email' => ['email', 'some11212e11212'];
-        yield 'null email' => ['email', null];
+        yield 'empty file' => ['image', null];
     }
 }

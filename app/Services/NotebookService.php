@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\NotebookStoreRequest;
+use App\Http\Requests\NotebookUpdateRequest;
 use App\Models\Notebook;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,7 @@ class NotebookService
 
 
 
-    public function update(NotebookStoreRequest $request, Notebook $notebook): Notebook
+    public function update(NotebookUpdateRequest $request, Notebook $notebook): Notebook
     {
 
         $data = $request->only(
@@ -45,13 +46,15 @@ class NotebookService
             'birthday',
         );
 
+        if($request->image){
+            $path = $request->file('image')->store('notebook_images');
+            if ($notebook->image != $path) {
+                $data['image'] = $path;
+                Storage::disk('public')->delete($notebook->image);
+            }
+        }
         
-        Storage::disk('public')->delete($notebook->image);
-
-        $path = $request->file('image')->store('notebook_images');
-        $data['image'] = $path;
-
-        $notebook->updateOrFail($data);
+        $notebook->update($data);
 
         return $notebook;
     }
