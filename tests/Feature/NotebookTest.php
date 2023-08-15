@@ -25,7 +25,7 @@ class NotebookTest extends TestCase
     public function testNotebookIndex(): void
     {
         $notebook = Notebook::factory()->count(50)->create();
-        $response = $this->get('api/v1/notebook?page=2');
+        $response = $this->get('api/v1/notebook?page=2');//<-KISS
         
         dump($response->json()['meta']['current_page']);
         $response->assertStatus(200);
